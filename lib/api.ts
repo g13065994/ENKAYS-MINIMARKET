@@ -18,7 +18,10 @@ export function apiError(error: unknown, id = requestId()) {
     return NextResponse.json({ error: { code: error.code, message: error.message, details: error.details }, requestId: id }, { status: error.status });
   }
   if (error instanceof ZodError) {
-    return NextResponse.json({ error: { code: "VALIDATION_ERROR", message: "Invalid request", details: error.flatten() }, requestId: id }, { status: 400 });
+    const firstIssue = error.issues[0];
+    const field = firstIssue?.path?.length ? firstIssue.path.join(".") : null;
+    const message = firstIssue ? (field ? field + ": " : "") + firstIssue.message : "Invalid request";
+    return NextResponse.json({ error: { code: "VALIDATION_ERROR", message, details: error.flatten() }, requestId: id }, { status: 400 });
   }
   console.error("Unhandled API error", { requestId: id, error });
   return NextResponse.json({ error: { code: "INTERNAL_ERROR", message: "An unexpected error occurred." }, requestId: id }, { status: 500 });
