@@ -15,8 +15,8 @@ export const productSchema = z.object({
   status: z.enum(["DRAFT", "PUBLISHED", "OUT_OF_STOCK", "COMING_SOON"]).default("DRAFT"),
   featured: z.boolean().default(false),
   published: z.boolean().default(false),
-  categoryId: z.string().cuid().optional().nullable(),
-  brandId: z.string().cuid().optional().nullable(),
+  categoryId: z.string().trim().min(1).optional().nullable(),
+  brandId: z.string().trim().min(1).optional().nullable(),
   salesMethod: z.enum(["WHATSAPP", "PHONE", "DISABLED"]).default("WHATSAPP"),
   priceVisibility: z.enum(["SHOW_PRICE", "CONTACT_FOR_PRICE"]).default("SHOW_PRICE"),
 });
