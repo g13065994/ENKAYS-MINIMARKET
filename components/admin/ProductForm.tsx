@@ -14,7 +14,7 @@ function initialProduct(product?: Product): Product { return product ?? { name: 
 export function ProductForm({ product, categories = [], brands = [] }: { product?: Product; categories?: Option[]; brands?: Option[] }) {
   const router = useRouter(); const fileRef = useRef<HTMLInputElement>(null); const [form, setForm] = useState(initialProduct(product)); const [busy, setBusy] = useState(false); const [uploading, setUploading] = useState(false); const [deletingImage, setDeletingImage] = useState<string | null>(null); const [variantBusy, setVariantBusy] = useState(false);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]); const [filteredBrands, setFilteredBrands] = useState<Option[]>([]); const [brandsLoading, setBrandsLoading] = useState(false); const [newVariant, setNewVariant] = useState({ name: "", value: "", sku: "", price: "", stock: "0", active: true });
-  const set = (key: keyof Product, value: unknown) => setForm((v) => ({ ...v, [key]: value }));
+  const set = (key: keyof Product, value: unknown) => setForm((v) => ({ ...v, [key]: value }));\n  const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-");
 
   useEffect(() => {
     const categoryId = form.categoryId;
@@ -59,7 +59,7 @@ export function ProductForm({ product, categories = [], brands = [] }: { product
   return <form onSubmit={submit} className="space-y-6">
     <section className="rounded-2xl border border-ink-100 bg-white p-6 shadow-sm"><div className="grid gap-5 md:grid-cols-2">
       <label className="space-y-2 md:col-span-2"><span className="text-sm font-semibold">Product name</span><input required value={form.name} onChange={(e) => set("name", e.target.value)} className="w-full rounded-xl border border-ink-200 px-3 py-2.5" /></label>
-      <label className="space-y-2"><span className="text-sm font-semibold">Slug</span><input required value={form.slug} onChange={(e) => set("slug", e.target.value.toLowerCase().replace(/\s+/g, "-"))} className="w-full rounded-xl border border-ink-200 px-3 py-2.5" /></label>
+      <label className="space-y-2"><span className="text-sm font-semibold">Slug</span><input required value={form.slug} onChange={(e) => set("slug", slugify(e.target.value))} className="w-full rounded-xl border border-ink-200 px-3 py-2.5" /></label>
       <label className="space-y-2"><span className="text-sm font-semibold">SKU</span><input required value={form.sku} onChange={(e) => set("sku", e.target.value)} className="w-full rounded-xl border border-ink-200 px-3 py-2.5" /></label>
       <label className="space-y-2"><span className="text-sm font-semibold">Price (₦)</span><input required min="0" type="number" value={form.price / 100} onChange={(e) => set("price", Math.round(Number(e.target.value) * 100))} className="w-full rounded-xl border border-ink-200 px-3 py-2.5" /></label>
       <label className="space-y-2"><span className="text-sm font-semibold">Compare-at price (₦)</span><input min="0" type="number" value={form.compareAtPrice ? form.compareAtPrice / 100 : ""} onChange={(e) => set("compareAtPrice", e.target.value ? Math.round(Number(e.target.value) * 100) : null)} className="w-full rounded-xl border border-ink-200 px-3 py-2.5" /></label>
