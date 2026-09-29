@@ -1,11 +1,12 @@
 import { ImageResponse } from "next/og";
 import { createElement } from "react";
+import type { CSSProperties } from "react";
 import { BRAND_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
 
 export const runtime = "edge";
 
 export async function GET() {
-  const text = (value: string, style: Record<string, string | number>) =>
+  const text = (value: string, style: CSSProperties) =>
     createElement("div", { style }, value);
 
   const rootStyle = {
