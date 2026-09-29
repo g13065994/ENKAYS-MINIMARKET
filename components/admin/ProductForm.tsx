@@ -14,7 +14,8 @@ function initialProduct(product?: Product): Product { return product ?? { name: 
 export function ProductForm({ product, categories = [], brands = [] }: { product?: Product; categories?: Option[]; brands?: Option[] }) {
   const router = useRouter(); const fileRef = useRef<HTMLInputElement>(null); const [form, setForm] = useState(initialProduct(product)); const [busy, setBusy] = useState(false); const [uploading, setUploading] = useState(false); const [deletingImage, setDeletingImage] = useState<string | null>(null); const [variantBusy, setVariantBusy] = useState(false);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]); const [filteredBrands, setFilteredBrands] = useState<Option[]>([]); const [brandsLoading, setBrandsLoading] = useState(false); const [newVariant, setNewVariant] = useState({ name: "", value: "", sku: "", price: "", stock: "0", active: true });
-  const set = (key: keyof Product, value: unknown) => setForm((v) => ({ ...v, [key]: value }));\n  const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-");
+  const set = (key: keyof Product, value: unknown) => setForm((v) => ({ ...v, [key]: value }));
+  const slugify = (value: string) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-");
 
   useEffect(() => {
     const categoryId = form.categoryId;
